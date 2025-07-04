@@ -17,37 +17,46 @@ const rollDiceFunc = () => {
     const random = Math.trunc(Math.random() * 6) + 1;
     dice.src = `${random}.jpg`;
     dice.style.display = 'block';
-    if (random !== 1) {
-        if (activePlayer === 0) {
-            current0Score += random;
-            total0Score += random;
-            player0Current.textContent = current0Score;
-            checkWinner();
-        } else {
-            current1Score += random;
-            total1Score += random;
-            player1Current.textContent = current1Score;
-            checkWinner();
-        }
-    } else {
-        switchPlayer();
+
+    switch (random) {
+        case 1:
+            switchPlayer();
+            break;
+        default:
+            switch(activePlayer) {
+                case 0:
+                    current0Score += random;
+                    total0Score += random;
+                    player0Current.textContent = current0Score;
+                    checkWinner();
+                    break;
+                case 1:
+                    current1Score += random;
+                    total1Score += random;
+                    player1Current.textContent = current1Score;
+                    checkWinner();
+                    break;
+            }
     }
 };
+    
 
 const switchPlayer = () => {
-    if(activePlayer === 0){
-        activePlayer = 1;
-        current0Score = 0;
-        player0Current.textContent = current0Score;    
-        player0Score.textContent = total0Score;  
-    }else {
-        activePlayer = 0;
-        current1Score = 0;
-        player1Current.textContent = current1Score;
-        player1Score.textContent = total1Score;
-    }
-
+    switch(activePlayer) {
+        case 0:
+            activePlayer = 1;
+            current0Score = 0;
+            player0Current.textContent = current0Score;    
+            player0Score.textContent = total0Score;  
+            break;
+        case 1:
+            activePlayer = 0;
+            current1Score = 0;
+            player1Current.textContent = current1Score;
+            player1Score.textContent = total1Score;
+            break;
 }
+};
 
 const newGames = () => {
     dice.style.display = 'none';
@@ -63,13 +72,15 @@ const newGames = () => {
 };
 
 const checkWinner = () => {
-    if(total0Score >= 100){
+    while(total0Score >= 100){
         player0Score.textContent = "Winner";
         setTimeout(newGames, 2000);
+        return;
     }
-    else if(total1Score >= 100){
+    while(total1Score >= 100){
         player1Score.textContent = "Winner";
         setTimeout(newGames, 2000);
+        return;
     }
 }
 
